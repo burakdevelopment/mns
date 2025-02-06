@@ -13,10 +13,10 @@ Setup👇
 〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
 
 * Tool İçeriği💻✨
-* WAF (Firewall) Scan
-* SQL Vulnerablity Scan
-* XSS Vulnerablity Scan
-* SSL Sertificate Scan
+* WAF (Firewall) Taraması
+* SQL Vulnerablity Taraması
+* XSS Vulnerablity Taraması
+* SSL Certificate Taraması
 
 〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
 
@@ -24,7 +24,7 @@ Setup👇
 * WAF (Firewall) Scan
 * SQL Vulnerablity Scan
 * XSS Vulnerablity Scan
-* SSL Sertificate Scan
+* SSL Certificate Scan
 
 〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
 
