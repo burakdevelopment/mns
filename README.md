@@ -28,8 +28,6 @@ Setup👇
 
 〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
 
-![image](https://github.com/user-attachments/assets/58ec3538-4a0a-4ee6-b39f-1b5e14c61ddc)
-
 
 ![logo-removebg-preview](https://github.com/user-attachments/assets/d20f8e88-b20d-4f59-be87-32a4c545db06)
 
