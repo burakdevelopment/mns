@@ -2,7 +2,7 @@
 
 ![Version](https://img.shields.io/badge/version-v2.0-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Python](https://img.shields.io/badge/python-3.8+-brightgreen.svg) ![Platform](https://img.shields.io/badge/platform-Linux%20|%20Windows%20(WSL)-orange.svg)
 
-**MNS** is a multi-purpose tool for scanning websites and networks to identify security vulnerabilities, including WAFs, SSL issues, SQL Injection, and XSS.
+**MNS** is a comprehensive multi-purpose tool for scanning websites and networks to identify a wide range of security vulnerabilities including WAFs, SSL issues, SQL Injection, XSS, CSRF, IDOR, Command Injection, and File Inclusion. It supports modern web applications with AJAX, DOM/JS crawling, and advanced WAF bypass techniques.
 
 ---
 
@@ -16,7 +16,7 @@
   - [Installation on Windows (Recommended via WSL)](#installation-on-windows-recommended-via-wsl)
 - [Usage](#️-usage)
   - [First Run](#first-run)
-  - [Menu Options](#menu-options)
+  - [Command-Line Options](#command-line-options)
 - [Example Output](#example-output)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -24,29 +24,39 @@
 ---
 
 ## 🎯 Purpose of the Tool
-MNS is developed for penetration testers, cybersecurity enthusiasts, and developers to assess website and network security. It detects:
+MNS is designed for penetration testers, cybersecurity enthusiasts, and developers to comprehensively assess website and network security. It identifies:
 
-- Web Application Firewalls (WAF)
-- SSL certificate issues
-- SQL Injection (SQLi)
-- Cross-Site Scripting (XSS)
+- Web Application Firewalls (WAF) and supports bypass techniques
+- SSL/TLS certificate issues
+- SQL Injection (including Blind Boolean & Time-based)
+- Cross-Site Scripting (Reflected, Stored, DOM)
+- CSRF weaknesses
+- IDOR / Insecure Direct Object References
+- Command Injection
+- Local & Remote File Inclusion (LFI/RFI)
 
-It allows quick detection of security issues and provides clear reports for further analysis.
+The tool also handles modern web applications with AJAX endpoints, JS-generated DOM elements, and API responses, providing detailed reports for analysis.
 
 ---
 
 ## ✨ Key Features
-- ⚡ **WAF Detection:** Identifies popular WAFs such as Cloudflare, Akamai, Sucuri, ModSecurity, Fortinet, and more by analyzing HTTP headers and response content.
-- 🔐 **SSL Certificate Analysis:** Retrieves SSL certificate details including issuer, validity period, serial number, signature algorithm, and days until expiration.
-- 💥 **SQL Injection Detection:** Tests URLs with common SQL payloads and reports potential vulnerabilities.
-- 💻 **XSS Testing:** Checks for reflected XSS vulnerabilities using standard payloads in input parameters.
-- 🖥️ **Command-Line Interface:** Easy-to-use prompts with colored outputs using the `colorama` library.
-- 💾 **Extensible:** Additional payloads or security tests can be added easily.
+- ⚡ **WAF Detection & Bypass:** Detects common WAFs like Cloudflare, Akamai, ModSecurity, Sucuri, and Fortinet. Includes bypass methods such as URL encoding, case tampering, and SQL comment injection.  
+- 🔐 **SSL Certificate Analysis:** Retrieves SSL certificate details (issuer, validity, serial number, signature algorithm, expiration).  
+- 💥 **SQL Injection Detection:** Supports error-based, union-based, blind boolean, and blind time-based SQL injection. Intelligent parameter typing improves payload selection.  
+- 💻 **XSS Detection:** Tests for Reflected, Stored, and DOM-based XSS vulnerabilities in forms, inputs, and headers.  
+- 🕸️ **AJAX & DOM Crawling:** Selenium-powered crawling to handle JS-generated links, forms, and dynamic content.  
+- 🛡️ **CSRF & IDOR Testing:** Automatic CSRF token verification and IDOR testing via parameter manipulation.  
+- 🖥️ **Command Injection & File Inclusion:** Tests for system command injection and local/remote file inclusion vulnerabilities.  
+- 🌐 **Proxy & Anonymity Support:** Supports HTTP/SOCKS proxies, Tor, User-Agent rotation, and rate-limit bypass.  
+- 💾 **Report Generation:** Outputs detailed JSON, HTML, and CSV reports with graphs for vulnerability counts.  
+- 🏗️ **Extensible & Modular:** Payloads and security tests can easily be extended via `payloads.json`.  
+- ⚡ **Multi-threading:** ThreadPoolExecutor for fast, concurrent vulnerability testing.  
+- 🖌️ **CLI & Colored Output:** Interactive command-line interface with `colorama` for enhanced readability.
 
 ---
 
 ## ⚠️ Legal and Ethical Disclaimer
-> **DISCLAIMER:** This tool is intended for **educational purposes only** and for performing security audits on websites and networks you are **legally authorized to test**. Using this tool on systems without permission is illegal and may lead to serious legal consequences. The developer is not responsible for any misuse. **Use responsibly.**
+> **DISCLAIMER:** This tool is intended for **educational purposes only** and for performing security audits on websites and networks you are **legally authorized to test**. Using this tool on systems without permission is illegal and may lead to serious legal consequences. The developer is **not responsible for any misuse**. **Use responsibly.**
 
 ---
 
@@ -54,17 +64,34 @@ It allows quick detection of security issues and provides clear reports for furt
 
 ### Prerequisites
 - Python 3.8+
-- `pip`
-- `requests`
-- `colorama`
+- Google Chrome or Chromium (for Selenium DOM crawling)
+- `pip` for Python package management
+- Required Python packages: `requests`, `selenium`, `beautifulsoup4`, `colorama`, `pandas`, `matplotlib`
 
 ### Installation on Linux (Debian/Ubuntu)
 ```bash
-sudo apt update && sudo apt install -y python3 python3-pip git
+sudo apt update && sudo apt install -y python3 python3-pip git chromium-driver
 git clone https://github.com/burakdevelopment/mns
 cd mns
 pip install -r requirements.txt
 ```
+## 🛠️ Usage
+```bash
+python3 mns.py --url https://target.com --waf --ssl --report
+```
+
+### Command-Line Options
+
+Option,Description
+--url,Target URL (required)
+--tests,"Comma-separated tests: sql,xss,csrf,idor,command,file (default: all)"
+--waf,Detect WAF and attempt bypass
+--ssl,Scan SSL certificate info
+--proxy,Set proxy URL (HTTP/SOCKS)
+--depth,Crawl depth (default: 2)
+--threads,Number of concurrent threads (default: 5)
+--report,"Generate report in JSON, HTML, CSV formats"
+
 ## 🤝 Contributing
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Feel free to fork the repo and submit a pull request. For bug reports or feature requests, please open an "Issue".
 
