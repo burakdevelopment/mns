@@ -83,14 +83,14 @@ python3 mns.py --url https://target.com --waf --ssl --report
 ### Command-Line Options
 
 Option,Description
---url,Target URL (required)
---tests,"Comma-separated tests: sql,xss,csrf,idor,command,file (default: all)"
---waf,Detect WAF and attempt bypass
---ssl,Scan SSL certificate info
---proxy,Set proxy URL (HTTP/SOCKS)
---depth,Crawl depth (default: 2)
---threads,Number of concurrent threads (default: 5)
---report,"Generate report in JSON, HTML, CSV formats"
+- --url,Target URL (required)
+- --tests,"Comma-separated tests: sql,xss,csrf,idor,command,file (default: all)"
+- --waf,Detect WAF and attempt bypass
+- --ssl,Scan SSL certificate info
+- --proxy,Set proxy URL (HTTP/SOCKS)
+- --depth,Crawl depth (default: 2)
+- --threads,Number of concurrent threads (default: 5)
+- --report,"Generate report in JSON, HTML, CSV formats"
 
 ## 🤝 Contributing
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Feel free to fork the repo and submit a pull request. For bug reports or feature requests, please open an "Issue".
