@@ -64,7 +64,7 @@ sudo apt update && sudo apt install -y python3 python3-pip git
 git clone https://github.com/burakdevelopment/mns
 cd mns
 pip install -r requirements.txt
-
+```
 ## 🤝 Contributing
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Feel free to fork the repo and submit a pull request. For bug reports or feature requests, please open an "Issue".
 
