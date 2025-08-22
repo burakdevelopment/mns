@@ -50,13 +50,13 @@ def detect_waf(url):
                     return True
         if response.status_code == 403 or "waf" in response.text.lower() or "firewall" in response.text.lower():
             waf_detected = True
-            print(f"{Fore.YELLOW}Yanıt durumuna veya içeriğine göre WAF algılandı.")
+            print(f"{Fore.YELLOW}WAF detected based on response status or content.")
             return True
     except requests.RequestException as e:
-        print(f"{Fore.RED}WAF testi sırasında hata: {e}")
+        print(f"{Fore.RED}Error during WAF testing: {e}")
     
     if not waf_detected:
-        print(f"{Fore.GREEN}WAF tespit edilmedi.")
+        print(f"{Fore.GREEN}No WAF detected.")
         return False
 
 def test_sql_injection(url):
@@ -69,13 +69,13 @@ def test_sql_injection(url):
             response = requests.get(test_url)
             if "error" in response.text.lower() or "sql" in response.text.lower():
                 vulnerable = True
-                print(f"{Fore.RED}SQL açığı mevcut: {payload}")
+                print(f"{Fore.RED}SQL vulnerability exists: {payload}")
                 break
         except requests.RequestException as e:
-            print(f"{Fore.RED}SQL testi sırasında hata: {url}: {e}")
+            print(f"{Fore.RED}Error during SQL testing: {url}: {e}")
     
     if not vulnerable:
-        print(f"{Fore.GREEN}SQL güvenlik açığı bulunamadı.")
+        print(f"{Fore.GREEN}No SQL vulnerability found.")
 
 def test_xss(url):
     payloads = ['<script>alert(1)</script>', '" onmouseover="alert(1)"']
@@ -87,13 +87,13 @@ def test_xss(url):
             response = requests.get(url, params=params)
             if payload in response.text:
                 vulnerable = True
-                print(f"{Fore.RED}XSS açığı mevcut: {payload}")
+                print(f"{Fore.RED}XSS vulnerability exists: {payload}")
                 break
         except requests.RequestException as e:
-            print(f"{Fore.RED}XSS testi sırasında hata: {url}: {e}")
+            print(f"{Fore.RED}Error during XSS testing: {url}: {e}")
     
     if not vulnerable:
-        print(f"{Fore.GREEN}XSS güvenlik açığı bulunamadı.")
+        print(f"{Fore.GREEN}No XSS vulnerabilities were found.")
 
 def ssl_scan(hostname):
     context = ssl.create_default_context()
@@ -107,55 +107,56 @@ def ssl_scan(hostname):
                 not_before = cert['notBefore']
                 not_after = cert['notAfter']
 
-                print(f"\n{Fore.CYAN}SSL Sertifika Bilgileri:")
-                print(f"{Fore.WHITE}  Başlık: {subject}")
-                print(f"{Fore.WHITE}  Sağlayıcı: {issuer}")
-                print(f"{Fore.WHITE}  Sürüm: {cert.get('version', 'Unknown')}")
-                print(f"{Fore.WHITE}  Doğrulanılan tarih: {not_before}")
-                print(f"{Fore.WHITE}  Geçerlilik Tarihi: {not_after}")
-                print(f"{Fore.WHITE}  Seri Numarası: {cert['serialNumber']}")
-                print(f"{Fore.WHITE}  İmza Algoritması: {cert.get('signatureAlgorithm', 'Unknown')}")
+                print(f"\n{Fore.CYAN}SSL Certificate Information:")
+                print(f"{Fore.WHITE}  Header: {subject}")
+                print(f"{Fore.WHITE}  Provider: {issuer}")
+                print(f"{Fore.WHITE}  Version: {cert.get('version', 'Unknown')}")
+                print(f"{Fore.WHITE}  Confirmed date: {not_before}")
+                print(f"{Fore.WHITE}  Validity Date: {not_after}")
+                print(f"{Fore.WHITE}  Serial Number: {cert['serialNumber']}")
+                print(f"{Fore.WHITE}  Signature Algorithm: {cert.get('signatureAlgorithm', 'Unknown')}")
 
                 not_after_date = datetime.strptime(not_after, "%b %d %H:%M:%S %Y %Z")
                 days_left = (not_after_date - datetime.utcnow()).days
-                print(f"{Fore.WHITE}  Sertifikanın bitmesine kalan gün: {days_left} gün")
+                print(f"{Fore.WHITE}  Days remaining until the certificate expires: {days_left} gün")
 
     except Exception as e:
-        print(f"{Fore.RED}SSL taraması sırasında hata oluştu: {e}")
+        print(f"{Fore.RED}Error during SSL scan: {e}")
 
 def main():
-    url = input(f"{Fore.CYAN}Website URL'sini giriniz: ")
+    url = input(f"{Fore.CYAN}Enter your website URL: ")
     
     hostname = url.split("://")[-1].split("/")[0]
 
     
-    waf_choice = input(f"{Fore.YELLOW}WAF taraması yapmak istiyor musunuz? (evet/hayır): ").lower()
-    if waf_choice == 'evet':
+    waf_choice = input(f"{Fore.YELLOW}Do you want to perform WAF scanning? (yes/no): ").lower()
+    if waf_choice == 'yes':
         print(f"{Fore.CYAN}WAF kontrol ediliyor (Firewall)...")
         if detect_waf(url):
             print(f"{Fore.YELLOW}Firewall algılandı, ileri kontroller atlanıyor...")
             return
 
    
-    ssl_choice = input(f"{Fore.YELLOW}SSL sertifikası taraması yapmak istiyor musunuz? (evet/hayır): ").lower()
-    if ssl_choice == 'evet':
-        print(f"{Fore.CYAN}SSL sertifikası kontrol ediliyor...")
+    ssl_choice = input(f"{Fore.YELLOW}Do you want to scan SSL certificates? (yes/no): ").lower()
+    if ssl_choice == 'yes':
+        print(f"{Fore.CYAN}Checking SSL certificate...")
         ssl_scan(hostname)
 
    
-    print(f"{Fore.YELLOW}Yöntem seçin:")
+    print(f"{Fore.YELLOW}Choose method:")
     print(f"{Fore.CYAN}1. SQL Injection")
     print(f"{Fore.CYAN}2. XSS")
-    choice = input(f"{Fore.CYAN}SQL için 1, XSS için 2'yi tuşlayınız: ")
+    choice = input(f"{Fore.CYAN}Press 1 for SQL, 2 for XSS: ")
 
     if choice == "1":
-        print(f"{Fore.CYAN}SQL güvenlik açıkları test ediliyor...")
+        print(f"{Fore.CYAN}Testing for SQL vulnerabilities...")
         test_sql_injection(url)
     elif choice == "2":
-        print(f"{Fore.CYAN}XSS güvenlik açıkları test ediliyor...")
+        print(f"{Fore.CYAN}Testing for XSS vulnerabilities...")
         test_xss(url)
     else:
-        print(f"{Fore.RED}Geçersiz seçim. Lütfen 1 veya 2'yi seçin.")
+        print(f"{Fore.RED}Invalid selection. Please select 1 or 2.")
 
 if __name__ == "__main__":
     main()
+
