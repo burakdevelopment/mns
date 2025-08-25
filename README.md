@@ -1,8 +1,8 @@
-# MNS: Multi Network & Web Security Scanner Tool
+# MNS: Web Vulnerability Scanner
 
 ![Version](https://img.shields.io/badge/version-v2.0-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Python](https://img.shields.io/badge/python-3.8+-brightgreen.svg) ![Platform](https://img.shields.io/badge/platform-Linux%20|%20Windows%20(WSL)-orange.svg)
 
-**MNS** is a comprehensive multi-purpose tool for scanning websites and networks to identify a wide range of security vulnerabilities including WAFs, SSL issues, SQL Injection, XSS, CSRF, IDOR, Command Injection, and File Inclusion. It supports modern web applications with AJAX, DOM/JS crawling, and advanced WAF bypass techniques.
+**MNS** is a lightweight, fast, and driverless web vulnerability scanner for identifying security issues in websites, including WAF detection, SQL Injection, Reflected XSS, and File Inclusion. It uses requests-based crawling to discover forms and links, supports WAF bypass techniques, and generates detailed reports.
 
 ---
 
@@ -24,34 +24,28 @@
 ---
 
 ## 🎯 Purpose of the Tool
-MNS is designed for penetration testers, cybersecurity enthusiasts, and developers to comprehensively assess website and network security. It identifies:
+MNS is designed for penetration testers, cybersecurity enthusiasts, and developers to assess website security. It identifies:
 
-- Web Application Firewalls (WAF) and supports bypass techniques
-- SSL/TLS certificate issues
-- SQL Injection (including Blind Boolean & Time-based)
-- Cross-Site Scripting (Reflected, Stored, DOM)
-- CSRF weaknesses
-- IDOR / Insecure Direct Object References
-- Command Injection
+- Web Application Firewalls (WAF)
+- SQL Injection (including Error-based, Union-based, and Blind Time-based)
+- Reflected Cross-Site Scripting (XSS)
 - Local & Remote File Inclusion (LFI/RFI)
 
-The tool also handles modern web applications with AJAX endpoints, JS-generated DOM elements, and API responses, providing detailed reports for analysis.
+The tool focuses on static and dynamic form discovery via crawling, payload testing with WAF bypass variants, and report generation for analysis.
 
 ---
 
 ## ✨ Key Features
-- ⚡ **WAF Detection & Bypass:** Detects common WAFs like Cloudflare, Akamai, ModSecurity, Sucuri, and Fortinet. Includes bypass methods such as URL encoding, case tampering, and SQL comment injection.  
-- 🔐 **SSL Certificate Analysis:** Retrieves SSL certificate details (issuer, validity, serial number, signature algorithm, expiration).  
-- 💥 **SQL Injection Detection:** Supports error-based, union-based, blind boolean, and blind time-based SQL injection. Intelligent parameter typing improves payload selection.  
-- 💻 **XSS Detection:** Tests for Reflected, Stored, and DOM-based XSS vulnerabilities in forms, inputs, and headers.  
-- 🕸️ **AJAX & DOM Crawling:** Selenium-powered crawling to handle JS-generated links, forms, and dynamic content.  
-- 🛡️ **CSRF & IDOR Testing:** Automatic CSRF token verification and IDOR testing via parameter manipulation.  
-- 🖥️ **Command Injection & File Inclusion:** Tests for system command injection and local/remote file inclusion vulnerabilities.  
-- 🌐 **Proxy & Anonymity Support:** Supports HTTP/SOCKS proxies, Tor, User-Agent rotation, and rate-limit bypass.  
-- 💾 **Report Generation:** Outputs detailed JSON, HTML, and CSV reports with graphs for vulnerability counts.  
-- 🏗️ **Extensible & Modular:** Payloads and security tests can easily be extended via `payloads.json`.  
+- ⚡ **WAF Detection & Bypass:** Detects common WAFs with basic tests and applies bypass methods such as URL encoding, double encoding, case tampering, and SQL comment injection.  
+- 💥 **SQL Injection Detection:** Supports error-based, union-based, and blind time-based SQL injection with intelligent payload variants.  
+- 💻 **XSS Detection:** Tests for Reflected XSS vulnerabilities in forms and parameters.  
+- 🕸️ **Crawling:** Requests and BeautifulSoup-powered crawling to discover forms and links without Selenium.  
+- 🖥️ **File Inclusion Testing:** Checks for local and remote file inclusion vulnerabilities.  
+- 🌐 **Proxy Support:** Supports HTTP proxies for anonymity.  
+- 💾 **Report Generation:** Outputs detailed JSON, HTML, and CSV reports with graphs for vulnerability counts (requires `pandas` and `matplotlib`).  
+- 🏗️ **Extensible & Modular:** Payloads can be extended via `payloads.json`.  
 - ⚡ **Multi-threading:** ThreadPoolExecutor for fast, concurrent vulnerability testing.  
-- 🖌️ **CLI & Colored Output:** Interactive command-line interface with `colorama` for enhanced readability.
+- 🖌️ **CLI & Colored Output:** Interactive command-line interface with `colorama` for enhanced readability.  
 
 ---
 
@@ -64,22 +58,16 @@ The tool also handles modern web applications with AJAX endpoints, JS-generated 
 
 ### Prerequisites
 - Python 3.8+
-- Google Chrome or Chromium (for Selenium DOM crawling)
 - `pip` for Python package management
-- Required Python packages: `requests`, `selenium`, `beautifulsoup4`, `colorama`, `pandas`, `matplotlib`
+- Required Python packages: `requests`, `beautifulsoup4`, `colorama`, `pandas` *(optional for reports)*, `matplotlib` *(optional for graphs)*
 
 ### Installation on Linux (Debian/Ubuntu)
 ```bash
-sudo apt update && sudo apt install -y python3 python3-pip git chromium-driver
+sudo apt update && sudo apt install -y python3 python3-pip git
 git clone https://github.com/burakdevelopment/mns
 cd mns
 pip install -r requirements.txt
 ```
-## 🛠️ Usage
-```bash
-python3 mns.py --url https://target.com --waf --ssl --report
-```
-
 ### Command-Line Options
 
 Option,Description
@@ -91,6 +79,11 @@ Option,Description
 - --depth,Crawl depth (default: 2)
 - --threads,Number of concurrent threads (default: 5)
 - --report,"Generate report in JSON, HTML, CSV formats"
+
+## 🛠️ Usage
+```bash
+python mns.py --url https://yourttargetrizz.com --waf --tests sql,xss,file --report 
+```
 
 ## 🤝 Contributing
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Feel free to fork the repo and submit a pull request. For bug reports or feature requests, please open an "Issue".
